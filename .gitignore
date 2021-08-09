@@ -1,0 +1,9 @@
+../
+./
+.vs/
+*/bin
+*/obj
+*/packages
+*/properties
+*/App.config
+
