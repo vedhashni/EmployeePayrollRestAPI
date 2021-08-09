@@ -72,5 +72,40 @@ namespace EmployeePayrollTest
             Assert.AreEqual("Peter", res.name);
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
         }
+
+        //add data to json server
+        public void AddingInJsonServer(JsonObject jsonObject)
+        {
+            RestRequest request = new RestRequest("/employees", Method.POST);
+            request.AddParameter("application/json", jsonObject, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+
+        }
+        [TestMethod]
+        public void OnCallingPostAPI_Adding_MultipleData()
+        {
+            List<JsonObject> jsonList = new List<JsonObject>();
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.Add("name", "Vedhashni");
+            jsonObject.Add("Salary", 78000);
+            jsonList.Add(jsonObject);
+
+            JsonObject jsonObject1 = new JsonObject();
+            jsonObject1.Add("name", "Kishore");
+            jsonObject1.Add("salary", 59000);
+
+            jsonList.Add(jsonObject1);
+            foreach (var i in jsonList)
+            {
+                AddingInJsonServer(i);
+            }
+
+            IRestResponse response = GetAllEmployees();
+
+            var res = JsonConvert.DeserializeObject<List<Employee>>(response.Content);
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }
