@@ -126,6 +126,23 @@ namespace EmployeePayrollTest
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
+        /// <summary>
+        /// UC5--->Delete the employee details using the id
+        /// </summary>
+
+        [TestMethod]
+        public void OnCallingDeleteAPI_DeleteEmployeeDetails()
+        {
+            //Passing the method type as put(update existing employee details)
+
+            RestRequest request = new RestRequest("/employees/16", Method.DELETE);
+            IRestResponse response = client.Execute(request);
+            //check count after deletion
+            IRestResponse response1 = GetAllEmployees();
+            List<Employee> result = JsonConvert.DeserializeObject<List<Employee>>(response1.Content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
     }
+}
 
 }
