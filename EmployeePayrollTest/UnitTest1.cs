@@ -107,5 +107,25 @@ namespace EmployeePayrollTest
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
+
+        [TestMethod]
+        public void OnCallingPutAPI_UpdateEmployeeDetails()
+        {
+            //Passing the method type as put(update existing employee details)
+            RestRequest request = new RestRequest("/employees/5", Method.PUT);
+            //Creating a object
+            JsonObject json = new JsonObject();
+            //Adding the details
+            json.Add("name", "Ann");
+            json.Add("salary", 40000);
+            //passing the type as json 
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            //convert the jsonobject to employee object
+            var res = JsonConvert.DeserializeObject<Employee>(response.Content);
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
     }
+
 }
